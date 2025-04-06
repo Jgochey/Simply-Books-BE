@@ -23,13 +23,13 @@ app.UseHttpsRedirection();
 
 
 // GET Authors
-app.MapGet("/api/authors", (SimplyBooksDbContext db) =>
+app.MapGet("/authors", (SimplyBooksDbContext db) =>
 {
     return db.Authors.ToList();
 });
 
 // GET Single Author by Id
-app.MapGet("api/authors/{id}", (SimplyBooksDbContext db, int id) =>
+app.MapGet("authors/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -43,13 +43,13 @@ app.MapGet("api/authors/{id}", (SimplyBooksDbContext db, int id) =>
 });
 
 // POST Author
-app.MapPost("/api/authors", (SimplyBooksDbContext db, Author author) =>
+app.MapPost("/authors", (SimplyBooksDbContext db, Author author) =>
 {
     try
     {
         db.Authors.Add(author);
         db.SaveChanges();
-        return Results.Created($"/api/authors/{author.Id}", author);
+        return Results.Created($"/authors/{author.Id}", author);
     }
     catch (DbUpdateException)
     {
@@ -58,7 +58,7 @@ app.MapPost("/api/authors", (SimplyBooksDbContext db, Author author) =>
 });
 
 // DELETE Author
-app.MapDelete("/api/authors/{id}", (SimplyBooksDbContext db, int id) =>
+app.MapDelete("/authors/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -78,7 +78,7 @@ app.MapDelete("/api/authors/{id}", (SimplyBooksDbContext db, int id) =>
 });
 
 // UPDATE Author
-app.MapPut("/api/authors/{id}", (SimplyBooksDbContext db, int id, Author author) =>
+app.MapPut("/authors/{id}", (SimplyBooksDbContext db, int id, Author author) =>
 {
     Author authorToUpdate = db.Authors.SingleOrDefault(author => author.Id == id);
     if (authorToUpdate == null)
@@ -92,11 +92,11 @@ app.MapPut("/api/authors/{id}", (SimplyBooksDbContext db, int id, Author author)
     authorToUpdate.Favorite = author.Favorite;
 
     db.SaveChanges();
-    return Results.NoContent();
+    return Results.Ok(author);
 });
 
 // GET a Single Author's Books
-app.MapGet("/api/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
+app.MapGet("/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -110,7 +110,7 @@ app.MapGet("/api/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
 });
 
 // GET Favorite Authors by Uid (User)
-app.MapGet("/api/authors/{uid}/favorites", (SimplyBooksDbContext db, string uid) =>
+app.MapGet("/authors/{uid}/favorites", (SimplyBooksDbContext db, string uid) =>
 {
     try
     {
@@ -124,13 +124,14 @@ app.MapGet("/api/authors/{uid}/favorites", (SimplyBooksDbContext db, string uid)
 });
 
 // GET Books
-app.MapGet("/api/books", (SimplyBooksDbContext db) =>
+app.MapGet("/books", (SimplyBooksDbContext db) =>
 {
-    return db.Books.ToList();
+    var books = db.Books.Where(b => b.IsPrivate == false).ToList();
+    return books.ToList();
 });
 
 // GET Single Book by Id
-app.MapGet("/api/books/{id}", (SimplyBooksDbContext db, int id) =>
+app.MapGet("/books/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -144,7 +145,7 @@ app.MapGet("/api/books/{id}", (SimplyBooksDbContext db, int id) =>
 });
 
 // DELETE Book
-app.MapDelete("/api/books/{id}", (SimplyBooksDbContext db, int id) =>
+app.MapDelete("/books/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -164,13 +165,13 @@ app.MapDelete("/api/books/{id}", (SimplyBooksDbContext db, int id) =>
 });
 
 // POST Book
-app.MapPost("/api/books", (SimplyBooksDbContext db, Book book) =>
+app.MapPost("/books", (SimplyBooksDbContext db, Book book) =>
 {
     try
     {
         db.Books.Add(book);
         db.SaveChanges();
-        return Results.Created($"/api/books/{book.Id}", book);
+        return Results.Created($"/books/{book.Id}", book);
     }
     catch (DbUpdateException)
     {
@@ -179,7 +180,7 @@ app.MapPost("/api/books", (SimplyBooksDbContext db, Book book) =>
 });
 
 // UPDATE Book
-app.MapPut("/api/books/{id}", (SimplyBooksDbContext db, int id, Book book) =>
+app.MapPut("/books/{id}", (SimplyBooksDbContext db, int id, Book book) =>
 {
     Book bookToUpdate = db.Books.SingleOrDefault(book => book.Id == id);
     if (bookToUpdate == null)
@@ -196,18 +197,18 @@ app.MapPut("/api/books/{id}", (SimplyBooksDbContext db, int id, Book book) =>
     bookToUpdate.IsPrivate = book.IsPrivate;
 
     db.SaveChanges();
-    return Results.NoContent();
+    return Results.Ok(book);
 });
 
 // GET On Sale Books
-app.MapGet("/api/books/sale", (SimplyBooksDbContext db) =>
+app.MapGet("/books/sale", (SimplyBooksDbContext db) =>
 {
     var onSaleBooks = db.Books.Where(b => b.Sale == true).ToList();
     return Results.Ok(onSaleBooks);
 });
 
 // GET Private Books
-app.MapGet("/api/books/{uid}/private", (SimplyBooksDbContext db, string uid) =>
+app.MapGet("/books/{uid}/private", (SimplyBooksDbContext db, string uid) =>
 {
     try
     {
@@ -221,7 +222,7 @@ app.MapGet("/api/books/{uid}/private", (SimplyBooksDbContext db, string uid) =>
 });
 
 // View Book Details
-app.MapGet("/api/books/{id}/details", (SimplyBooksDbContext db, int id) =>
+app.MapGet("/books/{id}/details", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -236,7 +237,7 @@ app.MapGet("/api/books/{id}/details", (SimplyBooksDbContext db, int id) =>
 });
 
 // View Author Details
-app.MapGet("/api/authors/{id}/details", (SimplyBooksDbContext db, int id) =>
+app.MapGet("/authors/{id}/details", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
@@ -251,7 +252,7 @@ app.MapGet("/api/authors/{id}/details", (SimplyBooksDbContext db, int id) =>
 });
 
 // Delete Author and their Books
-app.MapDelete("/api/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
+app.MapDelete("/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
 {
     try
     {

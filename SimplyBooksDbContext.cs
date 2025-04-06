@@ -24,9 +24,9 @@ public class SimplyBooksDbContext : DbContext
 
     modelBuilder.Entity<Book>().HasData(new Book[]
     {
-        new Book {Id = 1, Title = "The Cat in the Hat", AuthorId = 1, Image = "https://upload.wikimedia.org/wikipedia/en/3/39/The_Cat_in_the_Hat_%28book%29.jpg", Price = 10, Sale = false, Uid = "123", Description = "A mischievous cat visits two children on a rainy day." },
-        new Book {Id = 2, Title = "The Hobbit", AuthorId = 2, Image = "https://upload.wikimedia.org/wikipedia/en/4/4a/TheHobbit_FirstEdition.jpg" , Price = 20, Sale = true, Uid = "123", Description = "A fantasy novel about a hobbit's adventure." },
-        new Book {Id = 3, Title = "The Raven", AuthorId = 3, Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Edgar_Allan_Poe_%28cropped%29.jpg/800px-Edgar_Allan_Poe_%28cropped%29.jpg", Price = 15, Sale = true, Uid = "456", Description = "A narrative poem about a talking raven." },
+        new Book {Id = 1, Title = "The Cat in the Hat", AuthorId = 1, Image = "https://upload.wikimedia.org/wikipedia/en/3/39/The_Cat_in_the_Hat_%28book%29.jpg", Price = 10, Sale = false, Uid = "123", Description = "A mischievous cat visits two children on a rainy day.", IsPrivate = false },
+        new Book {Id = 2, Title = "The Hobbit", AuthorId = 2, Image = "https://upload.wikimedia.org/wikipedia/en/4/4a/TheHobbit_FirstEdition.jpg" , Price = 20, Sale = true, Uid = "123", Description = "A fantasy novel about a hobbit's adventure.", IsPrivate = true },
+        new Book {Id = 3, Title = "The Raven", AuthorId = 3, Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Edgar_Allan_Poe_%28cropped%29.jpg/800px-Edgar_Allan_Poe_%28cropped%29.jpg", Price = 15, Sale = true, Uid = "456", Description = "A narrative poem about a talking raven.", IsPrivate = true },
     });
 
 
