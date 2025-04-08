@@ -62,7 +62,7 @@ app.MapDelete("/authors/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
-        Author author = db.Authors.SingleOrDefault(author => author.Id == id);
+        Author? author = db.Authors.SingleOrDefault(author => author.Id == id);
         if (author == null)
         {
             return Results.NotFound();
@@ -80,7 +80,7 @@ app.MapDelete("/authors/{id}", (SimplyBooksDbContext db, int id) =>
 // UPDATE Author
 app.MapPut("/authors/{id}", (SimplyBooksDbContext db, int id, Author author) =>
 {
-    Author authorToUpdate = db.Authors.SingleOrDefault(author => author.Id == id);
+    Author? authorToUpdate = db.Authors.SingleOrDefault(author => author.Id == id);
     if (authorToUpdate == null)
     {
         return Results.NotFound();
@@ -149,7 +149,7 @@ app.MapDelete("/books/{id}", (SimplyBooksDbContext db, int id) =>
 {
     try
     {
-        Book book = db.Books.SingleOrDefault(book => book.Id == id);
+        Book? book = db.Books.SingleOrDefault(book => book.Id == id);
         if (book == null)
         {
             return Results.NotFound();
@@ -182,7 +182,7 @@ app.MapPost("/books", (SimplyBooksDbContext db, Book book) =>
 // UPDATE Book
 app.MapPut("/books/{id}", (SimplyBooksDbContext db, int id, Book book) =>
 {
-    Book bookToUpdate = db.Books.SingleOrDefault(book => book.Id == id);
+    Book? bookToUpdate = db.Books.SingleOrDefault(book => book.Id == id);
     if (bookToUpdate == null)
     {
         return Results.NotFound();
@@ -263,7 +263,7 @@ app.MapDelete("/authors/{id}/books", (SimplyBooksDbContext db, int id) =>
         }
         db.SaveChanges();
 
-        Author author = db.Authors.SingleOrDefault(author => author.Id == id);
+        Author? author = db.Authors.SingleOrDefault(author => author.Id == id);
         if (author == null)
         {
             return Results.NotFound();
